@@ -1,5 +1,5 @@
 'use strict';
-var VERSION = '2.0.1',
+var VERSION = '2.1.0',
     CONSTANTS = require('../constants.json'),
     utils = require('../utils.js'),
     bidfactory = require('../bidfactory.js'),
@@ -46,6 +46,18 @@ var ConversantAdapter = function () {
       make: n.vendor ? n.vendor : '',
       ua: n.userAgent
     };
+  };
+
+  var checkCookies = function () {
+    var cookieEnabled = 0;
+    if (n.cookieEnabled){
+      cookieEnabled = 1;
+    } else {
+      document.cookie = 'checkcookie =; Path=/;';
+      cookieEnabled = document.cookie.indexOf('checkcookie') !== -1 ? 1 : 0;
+      document.cookie = 'checkcookie=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+    }
+    return cookieEnabled;
   };
 
   var callBids = function (params) {
@@ -111,7 +123,7 @@ var ConversantAdapter = function () {
       'at': 1
     };
 
-    var url = secure ? 'https:' + conversantUrl : location.protocol + conversantUrl;
+    var url = secure ? 'https:' + conversantUrl : location.protocol + conversantUrl + '&sc=' + checkCookies();
     ajax(url, appendScript, JSON.stringify(conversantBidReqs), {
       withCredentials : true
     });
