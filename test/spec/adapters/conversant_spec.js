@@ -254,6 +254,7 @@ describe('Conversant adapter tests', function () {
 
       var request = server.requests[0];
       expect(request.requestBody).to.not.be.empty;
+      expect(request.withCredentials).to.equal(true);
     });
   });
 });

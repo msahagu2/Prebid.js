@@ -48,18 +48,6 @@ var ConversantAdapter = function () {
     };
   };
 
-  var checkCookies = function () {
-    var cookieEnabled = 0;
-    if (n.cookieEnabled){
-      cookieEnabled = 1;
-    } else {
-      document.cookie = 'checkcookie =; Path=/;';
-      cookieEnabled = document.cookie.indexOf('checkcookie') !== -1 ? 1 : 0;
-      document.cookie = 'checkcookie=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-    }
-    return cookieEnabled;
-  };
-
   var callBids = function (params) {
     var conversantBids = params.bids || [];
     requestBids(conversantBids);
@@ -123,7 +111,7 @@ var ConversantAdapter = function () {
       'at': 1
     };
 
-    var url = secure ? 'https:' + conversantUrl : location.protocol + conversantUrl + '&sc=' + checkCookies();
+    var url = secure ? 'https:' + conversantUrl : location.protocol + conversantUrl;
     ajax(url, appendScript, JSON.stringify(conversantBidReqs), {
       withCredentials : true
     });
